@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>props</title>
+</head>
+<body>
+  <div id="app">
+    <app-header v-bind:propsdata="message"></app-header>
+    <app-content v-bind:propsdata="num"></app-content>
+  </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<script>
+  var appHeader = {
+    template:'<h1>{{ propsdata }}</h1>',
+    props: ['propsdata']
+  }
+
+  var appContent = {
+    template:'<p>{{ propsdata }}</p>',
+    props: ['propsdata']
+  }
+
+  new Vue({
+    el: '#app',
+    components: {
+      'app-header' : appHeader,
+      'app-content': appContent
+    },
+    data: {
+      message: 'hi',
+      num:10
+    }
+  })
+</script>
+</html>
