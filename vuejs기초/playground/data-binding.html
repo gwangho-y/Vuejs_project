@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>dataBinding</title>
+</head>
+<body>
+
+  <div id="app">
+    <p v-bind:id="uuid" v-bind:class="name"> {{num}}</p>
+    <p> {{doubleNum}}</p>
+
+    <div v-if="loading"> 로딩중...</div>
+    <div v-else> 로딩끝 </div>
+    <!--  display:none으로 DOM에 남아있다  -->
+    <div v-show="loading"> 로딩중....</div>
+  </div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+<script>
+
+  new Vue({
+    el:'#app',
+    data: {
+      num:10,
+      uuid: 123114,
+      name: 'text-blue',
+      loading: true
+    },
+    computed: {
+      doubleNum: function (){
+        return this.num*2
+      }
+    }
+  })
+</script>
+</body>
+</html>
