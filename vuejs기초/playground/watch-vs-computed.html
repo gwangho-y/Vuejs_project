@@ -6,40 +6,41 @@
 </head>
 <body>
 
-<div id="app">
-  <button>inc</button>
-</div>
+    <div id="app">
+      <button>inc</button>
+    </div>
 
-<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-<script>
-  new Vue({
-    el: '#app',
-    data: {
-      num: 10,
-    },
-    // 단순 계산 같은 작업들을 watch에 하면 코드가 지저분해진다 - 캡틴 판교 경험
-    // API 호출등 무거운 작업은 watch로 해결한다.
-    watch: {
-      num: function (newValue, oldValue) {
-        this.fetchUserByNumber(newValue)
-      },
-    },
-    // https://vuejs.org/guide/essentials/computed.html
-    // 공식 문서에서 단순한 텍스트나 숫자 계산은 computed 사용을 권장한다.
-    // computed는 캐싱이 되고 이전 값과 변경이 없다면 캐싱된 값을 그대로 사용한다.
-    computed: {
-      doubleNum: function () {
-        return this.num * 2
-      },
-    },
-    methods: {
-      fetchUserByNumber: function (num) {
-        axios.get(num)
-      },
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script>
+      new Vue({
+        el: '#app',
+        data: {
+          num: 10,
+        },
+        // 단순 계산 같은 작업들을 watch에 하면 코드가 지저분해진다 - 캡틴 판교 경험
+        // API 호출등 무거운 작업은 watch로 해결한다.
+        watch: {
+          num: function (newValue, oldValue) {
+            this.fetchUserByNumber(newValue)
+          },
+        },
+        // https://vuejs.org/guide/essentials/computed.html
+        // 공식 문서에서 단순한 텍스트나 숫자 계산은 computed 사용을 권장한다.
+        // computed는 캐싱이 되고 이전 값과 변경이 없다면 캐싱된 값을 그대로 사용한다.
+        computed: {
+          doubleNum: function () {
+            return this.num * 2
+          },
+        },
+        methods: {
+          fetchUserByNumber: function (num) {
+            axios.get(num)
+          },
 
 
 
-    }
-  });
-</script>
+        }
+      });
+    </script>
+</body>
 </html>
