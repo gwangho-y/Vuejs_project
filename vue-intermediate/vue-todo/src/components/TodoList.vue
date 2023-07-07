@@ -16,9 +16,23 @@ export default {
     }
   },
   created() {
-    // localStorage[Symbol.iterator] = function (){
-    //
-    // }
+
+    localStorage[Symbol.iterator] = function (){
+      let cur = 1
+      const max = this.length
+
+
+      return {
+        next() {
+          const value = localStorage.key(cur++) === 'loglevel:webpack-dev-server'?
+          return { value:  ===  , done: cur > max + 1}
+        }
+      }
+    }
+
+    for (const i of localStorage) {
+      console.log(i)
+    }
 
     if (localStorage.length > 0) {
       for (var i = 0; i< localStorage.length; i++) {
