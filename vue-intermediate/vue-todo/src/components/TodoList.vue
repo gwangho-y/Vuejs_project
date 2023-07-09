@@ -1,7 +1,13 @@
 <template>
   <div>
     <ul>
-      <li class="shadow" v-for="todoitem in todoItems"> {{todoitem}}</li>
+      <li class="shadow" v-for="(todoItem, index) in todoItems">
+        <i class="checkBtn fas fa-check" v-on:click="toggleComplete"></i>
+        {{todoItem}}
+        <span class="checkBtn removeBtn" v-on:click="removeTodo(todoItem, index)">
+          <i class="fas fa-trash-alt "></i>
+        </span>
+      </li>
     </ul>
   </div>
 </template>
@@ -14,6 +20,17 @@ export default {
     return {
       todoItems: []
     }
+  },
+  methods: {
+    removeTodo: function(todoItem, index) {
+      localStorage.removeItem(todoItem)
+      // splice와 slice의 차이점은 splice는 원본 배열을 건드리지만 slice는 건드리지 않는다
+      this.todoItems.splice(index,1)
+    },
+    toggleComplete: function () {
+
+    }
+
   },
   created() {
 
@@ -30,9 +47,9 @@ export default {
     //   }
     // }
 
-    for (const i of localStorage) {
-      console.log(i)
-    }
+    // for (const i of localStorage) {
+    //   console.log(i)
+    // }
 
     if (localStorage.length > 0) {
       for (var i = 0; i< localStorage.length; i++) {
@@ -79,6 +96,11 @@ export default {
   .textCompleted {
     text-decoration: line-through;
     color: #de4343;
+  }
+
+  .removeBtn {
+    margin-left: auto;
+    color: #de4343
   }
 
 </style>
