@@ -2,8 +2,8 @@
   <div>
     <ul>
       <li class="shadow" v-for="(todoItem, index) in todoItems">
-        <i class="checkBtn fas fa-check" v-on:click="toggleComplete"></i>
-        {{todoItem}}
+        <i class="checkBtn fas fa-check" v-bind:class="{checkBtnCompleted: todoItem.completed}" v-on:click="toggleComplete(todoItem,index)"></i>
+        <span v-bind:class="{ textCompleted: todoItem.completed }">{{todoItem.item}}</span>
         <span class="checkBtn removeBtn" v-on:click="removeTodo(todoItem, index)">
           <i class="fas fa-trash-alt "></i>
         </span>
@@ -27,8 +27,13 @@ export default {
       // splice와 slice의 차이점은 splice는 원본 배열을 건드리지만 slice는 건드리지 않는다
       this.todoItems.splice(index,1)
     },
-    toggleComplete: function () {
 
+    toggleComplete: function (todoItem, index) {
+      todoItem.completed = !todoItem.completed
+      // 로컬 스토리지 데이터 갱신하는 부분
+      // 로컬 스토리지가 업데이트가 구문이 없어서 지우고 새로 만들어줘야한다.
+      localStorage.removeItem(todoItem.item)
+      localStorage.setItem(todoItem.item, JSON.stringify(todoItem))
     }
 
   },
@@ -54,10 +59,9 @@ export default {
     if (localStorage.length > 0) {
       for (var i = 0; i< localStorage.length; i++) {
         if (localStorage.key(i) === 'loglevel:webpack-dev-server') continue
-        this.todoItems.push(localStorage.key(i))
+        this.todoItems.push(JSON.parse(localStorage.getItem(localStorage.key(i))))
       }
     }
-    console.log(this.todoItems)
   }
 }
 
