@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <TodoHeader/>
-    <todo-input></todo-input>
-    <todo-list/>
+    <todo-input v-on:addTodoItem="addOneItem"></todo-input>
+    <todo-list v-bind:propsdata="todoItems" v-on:removeItem="removeOneItem"/>
     <todo-footer/>
 
   </div>
@@ -20,6 +20,33 @@ export default {
     'TodoFooter': TodoFooter,
     'TodoInput' : TodoInput,
     'TodoList': TodoList
+  }
+  ,
+  data: function () {
+    return {
+      todoItems: []
+    }
+  },
+  methods : {
+    addOneItem: function (todoItem) {
+      var obj = { completed: false, item: todoItem }
+      localStorage.setItem(todoItem, JSON.stringify(obj))
+      this.todoItems.push(obj)
+    },
+
+    removeOneItem: function (todoItem, index) {
+      localStorage.removeItem(todoItem.item)
+      // splice와 slice의 차이점은 splice는 원본 배열을 건드리지만 slice는 건드리지 않는다
+      this.todoItems.splice(index,1)
+    },
+  },
+  created() {
+    if (localStorage.length > 0) {
+      for (var i = 0; i< localStorage.length; i++) {
+        if (localStorage.key(i) === 'loglevel:webpack-dev-server') continue
+        this.todoItems.push(JSON.parse(localStorage.getItem(localStorage.key(i))))
+      }
+    }
   }
 }
 </script>

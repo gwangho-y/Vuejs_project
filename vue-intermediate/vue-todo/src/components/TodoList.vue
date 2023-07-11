@@ -1,7 +1,7 @@
 <template>
   <div>
     <ul>
-      <li class="shadow" v-for="(todoItem, index) in todoItems">
+      <li class="shadow" v-for="(todoItem, index) in propsdata">
         <i class="checkBtn fas fa-check" v-bind:class="{checkBtnCompleted: todoItem.completed}" v-on:click="toggleComplete(todoItem,index)"></i>
         <span v-bind:class="{ textCompleted: todoItem.completed }">{{todoItem.item}}</span>
         <span class="checkBtn removeBtn" v-on:click="removeTodo(todoItem, index)">
@@ -16,16 +16,10 @@
 
 export default {
   name: "TodoList",
-  data: function () {
-    return {
-      todoItems: []
-    }
-  },
+  props: ['propsdata'],
   methods: {
     removeTodo: function(todoItem, index) {
-      localStorage.removeItem(todoItem)
-      // splice와 slice의 차이점은 splice는 원본 배열을 건드리지만 slice는 건드리지 않는다
-      this.todoItems.splice(index,1)
+      this.$emit('removeItem', todoItem, index)
     },
 
     toggleComplete: function (todoItem, index) {
@@ -56,12 +50,7 @@ export default {
     //   console.log(i)
     // }
 
-    if (localStorage.length > 0) {
-      for (var i = 0; i< localStorage.length; i++) {
-        if (localStorage.key(i) === 'loglevel:webpack-dev-server') continue
-        this.todoItems.push(JSON.parse(localStorage.getItem(localStorage.key(i))))
-      }
-    }
+
   }
 }
 
