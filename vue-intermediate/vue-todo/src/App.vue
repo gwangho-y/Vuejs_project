@@ -3,7 +3,7 @@
     <TodoHeader/>
     <todo-input v-on:addTodoItem="addOneItem"></todo-input>
     <todo-list v-bind:propsdata="todoItems" v-on:removeItem="removeOneItem" v-on:toggleItem="toggleOneItem"/>
-    <todo-footer v-on:/>
+    <todo-footer v-on:clearAll="clearAllItems"/>
 
   </div>
 </template>
@@ -16,10 +16,10 @@ import TodoList from './components/TodoList.vue'
 
 export default {
   components: {
-    'TodoHeader' : TodoHeader,
-    'TodoFooter': TodoFooter,
-    'TodoInput' : TodoInput,
-    'TodoList': TodoList
+     TodoHeader,
+     TodoFooter,
+     TodoInput,
+     TodoList
   }
   ,
   data: function () {
@@ -28,19 +28,19 @@ export default {
     }
   },
   methods : {
-    addOneItem: function (todoItem) {
-      var obj = { completed: false, item: todoItem }
+    addOneItem(todoItem) {
+      const obj = { completed: false, item: todoItem }
       localStorage.setItem(todoItem, JSON.stringify(obj))
       this.todoItems.push(obj)
     },
 
-    removeOneItem: function (todoItem, index) {
+    removeOneItem(todoItem, index) {
       localStorage.removeItem(todoItem.item)
       // splice와 slice의 차이점은 splice는 원본 배열을 건드리지만 slice는 건드리지 않는다
       this.todoItems.splice(index,1)
     },
 
-    toggleOneItem: function (todoItem, index) {
+    toggleOneItem(todoItem, index) {
       // 여기서 TodoList 프롭스로 접근된 데이터를 다시 위로 받아서 바꾸는 것은 좋지 않다고 한다. 이걸 안티패턴이라고 하는데 왜 안 좋은거지?
       // 컴포넌트가 컨테이너의 성격을 갖고 있기 때문에 보통 TodoItems에 접근해서 조작하는게 훨씬 좋다.
       this.todoItems[index].completed = !this.todoItems[index].completed
@@ -48,12 +48,15 @@ export default {
       // 로컬 스토리지가 업데이트가 구문이 없어서 지우고 새로 만들어줘야한다.
       localStorage.removeItem(todoItem.item)
       localStorage.setItem(todoItem.item, JSON.stringify(todoItem))
-
+    },
+    clearAllItems () {
+      localStorage.clear()
+      this.todoItems=[]
     }
   },
   created() {
     if (localStorage.length > 0) {
-      for (var i = 0; i< localStorage.length; i++) {
+      for (let i = 0; i< localStorage.length; i++) {
         if (localStorage.key(i) === 'loglevel:webpack-dev-server') continue
         this.todoItems.push(JSON.parse(localStorage.getItem(localStorage.key(i))))
       }
