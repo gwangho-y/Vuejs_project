@@ -23,11 +23,7 @@ export default {
     },
 
     toggleComplete: function (todoItem, index) {
-      todoItem.completed = !todoItem.completed
-      // 로컬 스토리지 데이터 갱신하는 부분
-      // 로컬 스토리지가 업데이트가 구문이 없어서 지우고 새로 만들어줘야한다.
-      localStorage.removeItem(todoItem.item)
-      localStorage.setItem(todoItem.item, JSON.stringify(todoItem))
+      this.$emit('toggleItem', todoItem, index)
     }
 
   },
