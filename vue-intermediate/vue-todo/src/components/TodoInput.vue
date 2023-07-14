@@ -24,7 +24,7 @@ import Modal from './common/Modal.vue'
 export default {
   name: "TodoInput",
   components: {
-    Modal: Modal
+    Modal
   },
   data: function () {
     return {
@@ -35,7 +35,8 @@ export default {
   methods: {
     addTodo: function () {
       if (this.newTodoItem !== '') {
-        this.$emit('addTodoItem', this.newTodoItem)
+        const text = this.newTodoItem.trim()
+        this.$store.commit('addOneItem' , text)
         this.clearInput()
       }else {
         this.showModal = !this.showModal
