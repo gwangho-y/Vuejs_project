@@ -7,14 +7,15 @@
 </template>
 
 <script>
-
+import { mapMutations } from "vuex";
 export default {
   name: "TodoFooter",
 
   methods: {
-    clearTodo: function () {
-      this.$store.commit('clearAllItems' )
-    }
+    ...mapMutations({
+      clearTodo: 'clearAllItems'
+    })
+
   }
 }
 </script>

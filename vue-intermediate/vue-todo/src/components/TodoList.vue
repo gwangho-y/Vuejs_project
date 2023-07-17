@@ -2,10 +2,10 @@
   <div>
 <!--    name은 css 클래스 이름과 맞춰준다 -->
     <transition-group name="list" tag="ul">
-      <li class="shadow" v-for="(todoItem, index) in this.$store.state.todoItems" :key="todoItem.item">
-        <i class="checkBtn fas fa-check" v-bind:class="{checkBtnCompleted: todoItem.completed}" v-on:click="toggleComplete(todoItem,index)"></i>
+      <li class="shadow" v-for="(todoItem, index) in todoItems" :key="todoItem.item">
+        <i class="checkBtn fas fa-check" v-bind:class="{checkBtnCompleted: todoItem.completed}" v-on:click="toggleComplete({todoItem,index})"></i>
         <span v-bind:class="{ textCompleted: todoItem.completed }">{{todoItem.item}}</span>
-        <span class="checkBtn removeBtn" v-on:click="removeTodo(todoItem, index)">
+        <span class="checkBtn removeBtn" v-on:click="removeTodo({todoItem, index})">
           <i class="fas fa-trash-alt "></i>
         </span>
       </li>
@@ -15,16 +15,38 @@
 
 <script>
 
+import {mapGetters, mapMutations} from "vuex";
+
 export default {
   name: "TodoList",
-  methods: {
-    removeTodo: function(todoItem, index) {
-      this.$store.commit('removeOneItem', {todoItem, index})
-    },
+  computed: {
+    // todoItems() {
+    //   return this.$store.getters.storedTodoItems
+    // }
 
-    toggleComplete: function (todoItem, index) {
-      this.$store.commit('toggleOneItem', {todoItem, index})
-    }
+    // ...mapGetters(['storedTodoItems'])
+    // 가지고 올 getter의 이름을 변경하고 싶으면 아래와 같이 키를 지정해서 사용하면 된다.
+    ...mapGetters({
+      todoItems: 'storedTodoItems'
+    }),
+
+
+  },
+
+  methods: {
+
+    ...mapMutations({
+        removeTodo: 'removeOneItem',
+        toggleComplete: 'toggleOneItem'
+      }),
+
+    // removeTodo: function(todoItem, index) {
+    //   this.$store.commit('removeOneItem', {todoItem, index})
+    // },
+
+    // toggleComplete: function (todoItem, index) {
+    //   this.$store.commit('toggleOneItem', {todoItem, index})
+    // }
 
   },
   created() {
